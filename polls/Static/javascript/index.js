@@ -1,0 +1,1 @@
+console.log("Hello from polls Static JavaScript index.js!");
