@@ -169,3 +169,145 @@ urlpatterns = [
 ```
 python manage.py runserver
 ```
+
+---
+
+
+# Django Templates Setup Guide
+
+This document explains how to configure and use **HTML templates** in a Django project.
+
+
+---
+
+
+## 1. Recommended Folder Structure
+
+Create a `templates` folder at the **project root level** (same level as `manage.py`).
+```
+crud/folder
+├── manage.py
+├── crud/
+│ ├── settings.py
+│ ├── urls.py
+│ └── ...
+├── mycrudapp/
+│ ├── views.py
+│ ├── urls.py
+│ └── ...
+└── templates/
+└── mycrudapp/
+├── base.html
+├── home.html
+└── about.html
+```
+
+---
+
+## 2. Configure Templates in settings.py
+
+Open `crud/settings.py` and update the `TEMPLATES` section:
+
+```python
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [ BASE_DIR / 'templates' ], # 👈 IMPORTANT
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+
+## 3. Create Views to Render Templates
+
+Open mycrudapp/views.py:
+```
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'mycrudapp/home.html')
+
+def about(request):
+    return render(request, 'mycrudapp/about.html')
+```
+
+## 4.Create App-Level URLs
+
+Create or update mycrudapp/urls.py:
+```
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+]
+
+```
+
+## 5. Connect App URLs to Project URLs
+
+Open crud/urls.py:
+```
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('mycrudapp.urls')),
+]
+
+```
+
+## 6. Create HTML Template Files
+templates/mycrudapp/home.html
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to CRUD Home Page</h1>
+    <a href="/about/">About</a>
+</body>
+</html>
+
+```
+
+about.html
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About</title>
+</head>
+<body>
+    <h1>About Page</h1>
+    <a href="/">Home</a>
+</body>
+</html>
+
+```
+
+## 7. Run the Development Server
+
+```bash
+python manage.py runserver
+
+outpu: 
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/about/
+```
