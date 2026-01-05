@@ -37,8 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mycrudapp'
+    'mycrudapp',
+    'tailwind',
+    'theme'
 ]
+
+TAILWIND_APP_NAME = 'theme'
+INTERNAL_IPS = ['127.0.0.1']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -121,6 +126,8 @@ STATIC_URL = 'static/'
 STATIC_DIRS = [
     BASE_DIR / 'static',
 ]
+
+NPM_BIN_PATH = r"C:\nvm4w\nodejs\npm.cmd"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

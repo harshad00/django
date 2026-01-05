@@ -1,3 +1,4 @@
+ {% load static tailwind_tags %}
  {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -8,6 +9,7 @@
         {% block tittle %} Thia is my difol titel{% endblock  %}
     </title>
     <link rel="stylesheet" href=" {% static  'css/style.css'%}">
+    {% tailwind_css %}
 </head>
 <body>
      <nav> this in nav bar </nav>
