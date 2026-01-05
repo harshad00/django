@@ -311,3 +311,114 @@ outpu:
 http://127.0.0.1:8000/
 http://127.0.0.1:8000/about/
 ```
+
+# Django Static Files Setup (CSS)
+
+This document explains how to configure **static files** (CSS) in a Django project and use them inside HTML templates.
+
+---
+
+## 1. Recommended Folder Structure
+
+Create a `static` folder at the **project root level** (same level as `manage.py`).
+```
+crud/
+├── manage.py
+├── crud/
+│ ├── settings.py
+│ ├── urls.py
+│ └── ...
+├── mycrudapp/
+│ ├── views.py
+│ ├── urls.py
+│ └── ...
+├── templates/
+│ └── mycrudapp/
+│ ├── home.html
+│ └── about.html
+└── static/
+└── mycrudapp/
+└── css/
+└── style.css
+```
+
+📌 Best practice:  
+`static/app_name/css/style.css`
+
+---
+
+## 2. Configure Static Files in settings.py
+
+Open `crud/settings.py` and add/update the following:
+
+```python
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+```
+⚠️ Do NOT remove STATIC_URL.
+
+## 3. Create CSS File
+
+Create the file:
+```
+static/mycrudapp/css/style.css
+```
+Add sample CSS:
+```css
+body {
+    background-color: #f4f6f8;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: #2c3e50;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+```
+## 4. Load Static Files in HTML Template
+
+Open your HTML file:
+```
+templates/mycrudapp/home.html
+```
+At the top of the file, load static:
+```
+{% load static %}
+```
+
+Link the CSS file:
+```
+<link rel="stylesheet" href="{% static 'mycrudapp/css/style.css' %}">
+```
+
+## 5. Complete home.html Example
+``` html
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'mycrudapp/css/style.css' %}">
+</head>
+<body>
+    <h1>Welcome to CRUD Home Page</h1>
+    <a href="/about/">About</a>
+</body>
+</html>
+```
+## 6. Restart the Server
+After adding static files, restart Django server:
+```
+python manage.py runserver
+```
