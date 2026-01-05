@@ -6,3 +6,17 @@ body {
 h1{
     color: aqua;
 }
+
+section{
+    height: 80vh;
+}
+
+nav{
+    background-color: aquamarine;
+    color: #0d3864;
+}
+
+footer{
+    background-color: cadetblue;
+    color: aliceblue;
+}
