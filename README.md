@@ -597,5 +597,42 @@ Open:
 ```
 http://127.0.0.1:8000/
 ```
+# Django Command: `python manage.py migrate`
+
+This document explains what the Django command  
+`python manage.py migrate` does, why it is important, and how it works internally.
+
+```
+ython manage.py migrate
+```
+
+---
+
+## 1. What is `python manage.py migrate`?
+
+`migrate` is a Django management command used to:
+
+- Apply database changes
+- Create database tables
+- Update database schema
+- Sync Django models with the database
+
+In simple words:
+
+> **It creates and updates database tables based on Django models.**
+
+---
+
+## 2. Why is `migrate` Needed?
+
+Django uses an ORM (Object Relational Mapper).  
+You define tables using **Python classes (models)** instead of writing SQL manually.
+
+However:
+- Writing models alone does NOT create tables
+- Django needs to apply those changes to the database
+
+That’s where `migrate` comes in.
+
 
 
