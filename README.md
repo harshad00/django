@@ -422,3 +422,180 @@ After adding static files, restart Django server:
 ```
 python manage.py runserver
 ```
+# Django Template Language (Jinja) Guide
+
+Django uses a built-in template engine that is **Jinja-like**.  
+It allows writing **dynamic HTML** using variables, conditions, loops, and template inheritance.
+
+---
+
+## 1. What is Jinja / Django Template Language?
+
+Jinja (in Django context) is used to:
+- Display dynamic data in HTML
+- Reuse HTML code
+- Apply logic (if, for, etc.) inside templates
+- Keep Python logic separate from HTML
+
+Syntax uses:
+```
+{{ }} → variables
+{% %} → logic / tags
+{# #} → comments
+```
+
+# Tailwind CSS Setup in Django Using django-tailwind (With Reload)
+
+This guide explains how to integrate **Tailwind CSS** into a Django project using  
+`django-tailwind` and `django-browser-reload` with **automatic reload support**.
+
+---
+
+## 1. Install Required Python Packages
+
+Run these commands inside your Django project (virtual environment recommended):
+
+```bash
+pip install django-tailwind
+pip install django-browser-reload
+```
+
+2. Add Apps to INSTALLED_APPS
+
+Open settings.py and update INSTALLED_APPS:
+```
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    'tailwind',
+    'theme',                   # Tailwind app (will be created)
+    'django_browser_reload',   # Auto reload
+
+    'mycrudapp',
+]
+```
+
+## 3. Create Tailwind App
+Run:
+```
+python manage.py tailwind init
+
+You will be asked for an app name.
+Enter:
+[theme]
+```
+This creates a Tailwind app inside your project.
+
+## 4. Install Tailwind Dependencies (npm)
+
+Run:
+```
+python manage.py tailwind install
+```
+This will:
+
+Install Node dependencies
+
+Create package.json
+
+Setup Tailwind config automatically
+
+## 5. Configure NPM Path in settings.py (IMPORTANT)
+
+If npm is not detected automatically (common on Windows), add this to settings.py:
+```
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+```
+
+📌 Check npm path using:
+```bash
+where npm
+```
+
+## 6. Configure Template Reload Middleware
+Add middleware at the bottom of MIDDLEWARE:
+```python
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
+]
+```
+## 7. Add Reload URLs
+Open urls.py (project level):
+```python
+from django.urls import path, include
+
+urlpatterns = [
+    path('__reload__/', include('django_browser_reload.urls')),
+    path('', include('mycrudapp.urls')),
+]
+```
+
+## 8. Configure Templates (Required)
+
+In settings.py, ensure APP_DIRS is enabled:
+
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+## 9. Load Tailwind in Base Template
+Edit templates/mycrudapp/base.html:
+```
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Django Tailwind{% endblock %}</title>
+    {% tailwind_css %}
+</head>
+<body>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>
+```
+## 10. Start Tailwind Watcher (AUTO RELOAD)
+
+Run this command in Terminal 1:
+```
+python manage.py tailwind start
+```
+## 11. Start Django Server
+
+Run in Terminal 2:
+```
+python manage.py runserver
+```
+Open:
+```
+http://127.0.0.1:8000/
+```
+
+
