@@ -129,6 +129,10 @@ STATIC_DIRS = [
 
 NPM_BIN_PATH = r"C:\nvm4w\nodejs\npm.cmd"
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT =  BASE_DIR / 'media',
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
